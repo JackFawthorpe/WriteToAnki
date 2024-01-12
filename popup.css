@@ -6,7 +6,7 @@ body {
     font-family: sans-serif;
 }
 
-form {
+.container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -39,8 +39,4 @@ button {
 
 .hidden-loading {
     display: none
-}
-
-.loading {
-    
 }

@@ -7,7 +7,9 @@
   
     "permissions": [
         "contextMenus",
-        "http://localhost:5000/*"
+        "activeTab",
+        "http://localhost:5000/*",
+        "http://localhost:8765/*"
     ],
     "content_scripts": [
       {
