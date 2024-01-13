@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { API } from "./serviceWorkerAPI";
 
 function App() {
@@ -41,20 +41,23 @@ function App() {
     );
   }
 
-  const handleKeyPress = (event: KeyboardEvent) => {
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Enter' && event.ctrlKey) {
       handleSubmit();
     }
-  };
+  }, [clozeText, selectedText, translatedText]);
+
+  useEffect(() => {
+    initialiseSelectedText();
+  }, []);
 
   useEffect( () => {
-    initialiseSelectedText();
     document.addEventListener('keydown', handleKeyPress);
 
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     }
-  }, []);
+  }, [handleKeyPress]);
 
 
   const getCloze = () => {
