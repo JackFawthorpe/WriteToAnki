@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "Write to Anki",
+    "version": "1.0",
+  
+    "description": "Streamlines reading to Flash Card Creation",
+  
+    "permissions": [
+      "scripting",
+      "contextMenus",
+      "activeTab",
+      "http://localhost:5000/*",
+      "http://localhost:8765/*"
+    ],
+    "background": {
+      "scripts": ["service-worker.js"],
+      "persistent": true,
+      "type": "module"
+    },      
+    "browser_action": {
+      "default_title": "Write To Anki",
+      "default_popup": "index.html"
+    }
+  }
