@@ -37,9 +37,10 @@ function App() {
   const initialiseSelectedText = () => {
     API.getSelectedText()
     .then((text: string) => {
-      setSelectedText(text);
-      setClozeText(text);
-      updateTranslation(text);
+      const filteredText = text.replace(/(\r\n|\n|\r)/gm, '').trim();
+      setSelectedText(filteredText);
+      setClozeText(filteredText);
+      updateTranslation(filteredText);
     }).catch((err: string) => { 
       console.log(`An error occured getting selected text: ${err}`);
       setSelectedText("An error occured reading selected text, please try again");
