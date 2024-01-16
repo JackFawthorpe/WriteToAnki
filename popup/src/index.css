@@ -34,10 +34,18 @@
     @apply bg-blue-500 hover:bg-blue-700 text-white 
 }
 
+.btn-secondary {    
+    @apply border-blue-500 hover:border-blue-700 text-blue-500 border
+}
+
 .form-footer {
     @apply flex flex-row w-full justify-end
 }
 
 .alert {
     @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative
+}
+
+.spacing-container {
+    @apply gap-2
 }
