@@ -38,7 +38,7 @@ function App() {
   const initialiseSelectedText = () => {
     API.getSelectedText()
     .then((text: string) => {
-      const filteredText = text.replace(/(\r\n|\n|\r)/gm, '').trim();
+      const filteredText = text.replace(/(\r\n|\n|\r)/gm, ' ').trim();
       setSelectedText(filteredText);
       setClozeText(filteredText);
       updateTranslation(filteredText);
