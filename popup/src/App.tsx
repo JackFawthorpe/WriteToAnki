@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { API } from "./serviceWorkerAPI";
 import { AddCardResponse } from "./types/ResponseTypes";
+import ExternalTranslateButton from "./Components/ExternalTranslateButton";
 
 function App() {
 
@@ -57,7 +58,7 @@ function App() {
   }
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Enter' && event.ctrlKey) {
+    if (event.key === 'Enter' && event.ctrlKey && !event.shiftKey) {
       handleSubmit();
     }
   }, [clozeText, selectedText, translatedText]);
@@ -120,7 +121,8 @@ function App() {
           <label htmlFor="selected-text" className="label">Cloze Excercise (Put underscore in word to hide in Anki)</label>
           <textarea id="selected-text" value={clozeText} onChange={e => setClozeText(e.target.value)} className="input"/>
         </div>
-        <div className="form-footer">
+        <div className="form-footer spacing-container">
+            <ExternalTranslateButton text={selectedText}/>
             <button className="btn btn-primary" onClick={handleSubmit}>
                 Save
             </button>

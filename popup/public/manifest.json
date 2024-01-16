@@ -9,6 +9,7 @@
       "scripting",
       "contextMenus",
       "activeTab",
+      "tabs",
       "http://localhost:5000/*",
       "http://localhost:8765/*"
     ],
