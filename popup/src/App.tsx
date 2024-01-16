@@ -1,11 +1,27 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { API } from "./serviceWorkerAPI";
+import { AddCardResponse } from "./types/ResponseTypes";
 
 function App() {
 
   const [selectedText, setSelectedText] = useState<string>("");
   const [translatedText, setTranslatedText] = useState<string>("");
   const [clozeText, setClozeText] = useState<string>("");
+
+  const [displayError, setDisplayError] = useState<boolean>(false);
+  const errorSignalRef = useRef<undefined | number>();
+
+  const handleAddCardResponse = (response: AddCardResponse) => {
+    if (response.error) {
+      console.log(`Failed to add card: ${response.error}`)
+      setDisplayError(true);
+      errorSignalRef.current = setTimeout(() => {
+        setDisplayError(false);
+      }, 5000);
+      return;
+    }
+    window.close();
+  }
 
   const handleSubmit = async () => {
     const fields = {
@@ -14,11 +30,9 @@ function App() {
         "Spanish Cloze": getCloze(),
         "Spanish Cloze Answer": getClozeAnswer()
     };
-  browser.runtime.sendMessage({type: 'anki.addCard', fields: fields})
-  .then(() => {window.close()})
-  .catch(err => console.log(err));
-}
-
+    browser.runtime.sendMessage({type: 'anki.addCard', fields: fields})
+    .then(handleAddCardResponse);
+  }
 
   const initialiseSelectedText = () => {
     API.getSelectedText()
@@ -47,19 +61,6 @@ function App() {
     }
   }, [clozeText, selectedText, translatedText]);
 
-  useEffect(() => {
-    initialiseSelectedText();
-  }, []);
-
-  useEffect( () => {
-    document.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-    }
-  }, [handleKeyPress]);
-
-
   const getCloze = () => {
     const words = clozeText.split(' ');
     for (let i = 0; i < words.length; i++) {
@@ -82,10 +83,29 @@ function App() {
     return filteredWords.join(' ');
   }
 
+  useEffect( () => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [handleKeyPress]);
+
+  useEffect(() => {
+    initialiseSelectedText();
+
+    return () => {
+      if (errorSignalRef.current) {
+        clearTimeout(errorSignalRef.current);
+      }
+    }
+  }, []);
+
   return (
     <div className="rootContainer">
       <h2 className="title">Write to Anki</h2>
       <hr/>
+      <div hidden={!displayError} className="alert mt-2">An error occured saving your card</div>
       <div className="form">
         <div className="form-group">
           <label htmlFor="selected-text" className="label">Spanish</label>

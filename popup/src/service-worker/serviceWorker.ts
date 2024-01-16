@@ -13,10 +13,14 @@ browser.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             handleGetSelectedText().then(sendResponse);
             break;
         case 'translate.translate':
-            handleTranslation(request.body.text).then(sendResponse);
+            handleTranslation(request.body.text)
+            .then(sendResponse)
+            .catch(err => sendResponse({error: err}));
             break;
         case 'anki.addCard':
-            handleAddCard(request.fields).then(sendResponse);
+            handleAddCard(request.fields)
+            .then(sendResponse)
+            .catch(err => sendResponse({error: err}));
             break;
     }
     return true;
